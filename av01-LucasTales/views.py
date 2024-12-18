@@ -78,6 +78,7 @@ class View:
     def produto_reajustar(percentual):
         for obj in View.produto_listar():
             View.produto_atualizar(obj.id, obj.descricao, obj.preco * (1 + percentual), obj.estoque, obj.id_categoria)
+
     @staticmethod
     def venda_listar():
         return Vendas.listar()
@@ -108,3 +109,48 @@ class View:
     def venda_item_excluir(id):
         vi = VendaItem(id, 0, 0.0, 0, 0)
         VendaItems.excluir(vi)
+
+    @staticmethod
+    def adicionar_produto_carrinho(id_cliente, id_produto, quantidade):
+        cliente = Clientes.listar_id(id_cliente)
+        if cliente:
+            produto = View.produto_listar_id(id_produto)
+            if produto:
+                try:
+                    produto.diminuir_estoque(quantidade)
+                    cliente.carrinho.append((produto, quantidade))
+                    Produtos.atualizar(produto) 
+                    Clientes.atualizar(cliente)  
+                    print(f"Adicionado {quantidade} de {produto.descricao} ao carrinho do cliente {cliente.nome}.")
+                except ValueError as e:
+                    print(e)
+            else:
+                print(f"Produto com ID {id_produto} não encontrado.")
+        else:
+            print(f"Cliente com ID {id_cliente} não encontrado.")
+
+    @staticmethod 
+    def remover_produto_carrinho(id_cliente, id_produto): 
+        cliente = Clientes.listar_id(id_cliente) 
+        if cliente: 
+            for item in cliente.carrinho: 
+                produto, quantidade = item 
+                if produto.id == id_produto:
+                    produto.estoque += quantidade 
+                    Produtos.atualizar(produto)
+                    cliente.carrinho.remove(item) 
+                    Clientes.atualizar(cliente)
+                    print(f"Produto {produto.descricao} removido do carrinho do cliente {cliente.nome}.") 
+                    return 
+            print("Produto não encontrado no carrinho.") 
+        else: 
+            print("Cliente não encontrado.")
+
+    @staticmethod
+    def visualizar_carrinho(id_cliente):
+        cliente = Clientes.listar_id(id_cliente)
+        if cliente:
+            for produto, quantidade in cliente.carrinho:
+                print(f"Produto: {produto.descricao}, Quantidade: {quantidade}, Preço Unitário: R${produto.preco:.2f}")
+        else:
+            print(f"Cliente com ID {id_cliente} não encontrado.")

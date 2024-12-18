@@ -54,7 +54,7 @@ class Vendas:
                 try:
                     json.dump(cls.objetos, arquivo, default=lambda o: {
                         'id': o.id,
-                        'data': o.data if isinstance(o.data, str) else o.data.strftime('%Y-%m-%d %H:%M:%S'),  # Corrigir para string
+                        'data': o.data if isinstance(o.data, str) else o.data.strftime('%Y-%m-%d %H:%M:%S'), 
                         'carrinho': o.carrinho,
                         'total': o.total,
                         'idCliente': o.idCliente
@@ -63,7 +63,7 @@ class Vendas:
                 except Exception as e:
                     print(f"Erro ao salvar dados: {e}")
             else:
-                arquivo.write('[]')  # Escreve um array vazio se não houver objetos
+                arquivo.write('[]')
                 print("Arquivo JSON salvo vazio.")
     @classmethod
     def abrir(cls):

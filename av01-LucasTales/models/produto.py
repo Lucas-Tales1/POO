@@ -42,7 +42,19 @@ class Produtos:
         x = cls.listar_id(obj.id)
         if x != None:
             cls.objetos.remove(x)
-            cls.salvar()        
+            cls.salvar()   
+    @classmethod
+    def diminuir_estoque(cls, id_produto, quantidade):
+        produto = cls.listar_id(id_produto)
+        if produto:
+            if quantidade <= produto.estoque:
+                produto.estoque -= quantidade
+                cls.atualizar(produto)
+                print(f"Estoque atualizado: {produto.descricao} agora tem {produto.estoque} unidades.")
+            else:
+                raise ValueError("Quantidade solicitada excede a quantidade disponível em estoque.")
+        else:
+            raise ValueError("Produto não encontrado.")     
     @classmethod
     def salvar(cls):
         with open("produtos.json", mode="w") as arquivo:

@@ -20,6 +20,12 @@ class UI:
         print("  5 - Inserir, 6 - Listar, 7 - Atualizar, 8 - Excluir")
         print("Cadastro de Produtos")
         print("  9 - Inserir, 10 - Listar, 11 - Atualizar, 12 - Excluir, 13 - Reajustar")
+        print("Cadastro de Vendas")
+        print("  14 - Inserir, 15 - Listar, 16 - Atualizar, 17 - Excluir")
+        print("Cadastro de Itens de Venda")
+        print("  18 - Inserir, 19 - Listar, 20 - Atualizar, 21 - Excluir")
+        print("Ver Pedidos")
+        print("22 - Ver Pedidos")
         print("0 - Sair, 99 - Fim")
         op = int(input("\nInforme uma opção: "))
         if op == 0: UI.sair_do_sistema()
@@ -34,19 +40,32 @@ class UI:
         if op == 7: UI.categoria_atualizar()
         if op == 8: UI.categoria_excluir()
 
-        if op == 9:  UI.produto_inserir()
+        if op == 9: UI.produto_inserir()
         if op == 10: UI.produto_listar()
         if op == 11: UI.produto_atualizar()
         if op == 12: UI.produto_excluir()
         if op == 13: UI.produto_reajustar()
+
+        if op == 14: UI.venda_inserir()
+        if op == 15: UI.venda_listar()
+        if op == 16: UI.venda_atualizar()
+        if op == 17: UI.venda_excluir()
+
+        if op == 18: UI.venda_item_inserir()
+        if op == 19: UI.venda_item_listar()
+        if op == 20: UI.venda_item_atualizar()
+        if op == 21: UI.venda_item_excluir()
+
+        if op == 22: UI.ver_pedidos()
+
         return op
+
 
     def menu_cliente():
         print("1 - Listar Produtos, 2 - Adicionar Produto no Carrinho, 3 - Fechar Pedido, 4 - Ver Meus Pedidos")
         print("0 - Sair, 99 - Fim")
         op = int(input("\nInforme uma opção: "))
         if op == 0: UI.sair_do_sistema()
-
         if op == 1: UI.cliente_listar_produto()
         if op == 2: UI.cliente_adicionar_produto()
         if op == 3: UI.cliente_fechar_pedido()
@@ -181,21 +200,133 @@ class UI:
     def produto_reajustar(cls):
         reajuste = float(input("Informe o percentual de reajuste em %: "))
         View.produto_reajustar(reajuste/100)
-
     @classmethod
     def cliente_listar_produto(cls):
-        print("\nListar Produtos\n")
-        
+        produtos = View.produto_listar()
+        if len(produtos) == 0:
+            print("\nNenhum produto disponível\n")
+        else:
+            for produto in produtos:
+                id_categoria = produto.id_categoria
+                categoria = View.categoria_listar_id(id_categoria)
+                if categoria:
+                    print(f"{produto} - {categoria.descricao}")
+                else:
+                    print(f"{produto} - Categoria não encontrada")
     @classmethod
     def cliente_adicionar_produto(cls):
-        print("\nAdicionar Produtos no Carrinho\n")
+        cls.cliente_listar_produto()
+        id_produto = int(input("\nInforme o ID do produto a adicionar: "))
+        qtd = int(input("Informe a quantidade: "))
+        produto = View.produto_listar_id(id_produto)
+        if produto:
+            preco = produto.preco
+            idVenda = cls.cliente_id  
+            idProduto = produto.id
+            View.venda_item_inserir(qtd, preco, idVenda, idProduto)
+            print("\nProduto adicionado ao carrinho com sucesso!")
+        else:
+            print("\nProduto não encontrado!")
 
     @classmethod
     def cliente_fechar_pedido(cls):
-        print("\nFechar Pedido\n")
+        venda_id = cls.cliente_id  
+        itens = View.venda_item_listar()
+        total = 0
+        for item in itens:
+            if item.idVenda == venda_id:
+                total += item.preco * item.qtd
+        if total > 0:
+            data = input("Informe a data para finalizar o pedido (YYYY-MM-DD): ")
+            View.venda_inserir(data, False, total, cls.cliente_id)
+            print("\nPedido fechado com sucesso!")
+        else:
+            print("\nNenhum item no carrinho para fechar o pedido!")
 
     @classmethod
     def cliente_meus_pedidos(cls):
-        print("\nMeus Pedidos\n")
+        vendas = View.venda_listar()
+        encontrou_pedidos = False
+        for venda in vendas:
+            if venda.idCliente == cls.cliente_id:
+                print(venda)
+                encontrou_pedidos = True
+        if not encontrou_pedidos:
+            print("\nVocê não possui pedidos!")
+
+    @classmethod
+    def venda_inserir(cls):
+        data = input("Informe a data (YYYY-MM-DD): ")
+        carrinho = input("Está no carrinho (True/False)? ").lower() == 'true'
+        total = float(input("Informe o total da venda: "))
+        idCliente = int(input("Informe o ID do cliente: "))
+        View.venda_inserir(data, carrinho, total, idCliente)
+
+    @classmethod
+    def venda_listar(cls):
+        vendas = View.venda_listar()
+        if len(vendas) == 0:
+            print("Nenhuma venda cadastrada")
+        else:
+            for venda in vendas:
+                print(venda)
+
+    @classmethod
+    def venda_atualizar(cls):
+        cls.venda_listar()
+        id = int(input("Informe o id da venda a ser alterada: "))
+        data = input("Informe a nova data (YYYY-MM-DD): ")
+        carrinho = input("Está no carrinho (True/False)? ").lower() == 'true'
+        total = float(input("Informe o novo total da venda: "))
+        idCliente = int(input("Informe o ID do cliente: "))
+        View.venda_atualizar(id, data, carrinho, total, idCliente)
+
+    @classmethod
+    def venda_excluir(cls):
+        cls.venda_listar()
+        id = int(input("Informe o id da venda a ser excluída: "))
+        View.venda_excluir(id)
+
+    @classmethod
+    def venda_item_inserir(cls):
+        qtd = int(input("Informe a quantidade do produto: "))
+        preco = float(input("Informe o preço do produto: "))
+        idVenda = int(input("Informe o ID da venda: "))
+        idProduto = int(input("Informe o ID do produto: "))
+        View.venda_item_inserir(qtd, preco, idVenda, idProduto)
+
+    @classmethod
+    def venda_item_listar(cls):
+        itens = View.venda_item_listar()
+        if len(itens) == 0:
+            print("Nenhum item de venda cadastrado")
+        else:
+            for item in itens:
+                print(item)
+
+    @classmethod
+    def venda_item_atualizar(cls):
+        cls.venda_item_listar()
+        id = int(input("Informe o id do item de venda a ser alterado: "))
+        qtd = int(input("Informe a nova quantidade do produto: "))
+        preco = float(input("Informe o novo preço do produto: "))
+        idVenda = int(input("Informe o ID da venda: "))
+        idProduto = int(input("Informe o ID do produto: "))
+        View.venda_item_atualizar(id, qtd, preco, idVenda, idProduto)
+
+    @classmethod
+    def venda_item_excluir(cls):
+        cls.venda_item_listar()
+        id = int(input("Informe o id do item de venda a ser excluído: "))
+        View.venda_item_excluir(id)
+    @classmethod
+    def ver_pedidos(cls):
+        vendas = View.venda_listar()
+        if len(vendas) == 0:
+            print("Nenhum pedido encontrado")
+        else:
+            for venda in vendas:
+                print(venda)
+
 
 UI.main()            

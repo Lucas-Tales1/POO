@@ -36,9 +36,6 @@ class Clientes:
         if x != None:
             cls.objetos.remove(x)
             cls.objetos.append(obj)
-            #x.nome = obj.nome
-            #x.email = obj.email
-            #x.fone = obj.fone
             cls.salvar()        
     @classmethod
     def excluir(cls, obj):

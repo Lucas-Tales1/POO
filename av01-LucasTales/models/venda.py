@@ -2,17 +2,20 @@ import json
 from datetime import datetime
 
 class Venda:
-    def __init__(self,id,data,carrinho,total,idCliente):
+    def __init__(self, id, data, carrinho, total, idCliente):
         self.id = id
         self.data = data
         self.carrinho = carrinho
-        self.total = total 
+        self.total = total
         self.idCliente = idCliente
-    def __str__(self): 
+
+    def __str__(self):
         return f'id = {self.id} / Data = {self.data} / Carrinho = {self.carrinho} / Total = {self.total} / idCliente = {self.idCliente}'
-    
+
+
 class Vendas:
     objetos = []
+
     @classmethod
     def inserir(cls, obj):
         cls.abrir()
@@ -23,10 +26,12 @@ class Vendas:
         obj.id = id + 1
         cls.objetos.append(obj)
         cls.salvar()
+
     @classmethod
     def listar(cls):
         cls.abrir()
         return cls.objetos[:]
+
     @classmethod
     def listar_id(cls, id):
         cls.abrir()
@@ -34,6 +39,7 @@ class Vendas:
             if x.id == id:
                 return x
         return None
+
     @classmethod
     def atualizar(cls, obj):
         x = cls.listar_id(obj.id)
@@ -41,12 +47,14 @@ class Vendas:
             cls.objetos.remove(x)
             cls.objetos.append(obj)
             cls.salvar()
+
     @classmethod
     def excluir(cls, obj):
         x = cls.listar_id(obj.id)
         if x is not None:
             cls.objetos.remove(x)
             cls.salvar()
+
     @classmethod
     def salvar(cls):
         with open("vendas.json", mode="w") as arquivo:
@@ -54,7 +62,7 @@ class Vendas:
                 try:
                     json.dump(cls.objetos, arquivo, default=lambda o: {
                         'id': o.id,
-                        'data': o.data if isinstance(o.data, str) else o.data.strftime('%Y-%m-%d %H:%M:%S'), 
+                        'data': o.data if isinstance(o.data, str) else o.data.strftime('%Y-%m-%d %H:%M:%S'),
                         'carrinho': o.carrinho,
                         'total': o.total,
                         'idCliente': o.idCliente
@@ -65,6 +73,7 @@ class Vendas:
             else:
                 arquivo.write('[]')
                 print("Arquivo JSON salvo vazio.")
+
     @classmethod
     def abrir(cls):
         cls.objetos = []
@@ -92,6 +101,3 @@ class Vendas:
                 print("Arquivo vendas.json criado. Nenhum dado carregado.")
         except Exception as e:
             print(f"Erro ao abrir arquivo: {e}")
-
-
-   

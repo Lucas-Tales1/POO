@@ -1,0 +1,1 @@
+[{"id": 1, "nome": "admin", "email": "admin", "fone": "0000", "senha": "1234", "carrinho": []}, {"id": 2, "nome": "Lucas", "email": "1", "fone": "1", "senha": "1", "carrinho": [{"id": 4, "descricao": "uva", "preco": 10.0, "quantidade": 1}]}]

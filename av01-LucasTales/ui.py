@@ -62,14 +62,16 @@ class UI:
 
 
     def menu_cliente():
-        print("1 - Listar Produtos, 2 - Adicionar Produto no Carrinho, 3 - Fechar Pedido, 4 - Ver meu carrinho, 4 - Ver Meus Pedidos")
+        print("1 - Listar Produtos, 2 - Adicionar Produto no Carrinho, 3 - Ver meu carrinho, 4 - Retirar produto do carrinho, 5 - finalizar pedido,  6 - Ver Meus Pedidos")
         print("0 - Sair, 99 - Fim")
         op = int(input("\nInforme uma opção: "))
         if op == 0: UI.sair_do_sistema()
         if op == 1: UI.cliente_listar_produto()
         if op == 2: UI.cliente_adicionar_produto()
-        if op == 3: UI.cliente_fechar_pedido()
-        if op == 4: UI.cliente_meus_pedidos()
+        if op == 3: UI.cliente_visualizar_carrinho()
+        if op == 4: UI.cliente_remover_produto_carrinho()
+        if op == 5: UI.cliente_fechar_pedido()
+        if op == 6: UI.cliente_meus_pedidos()
         return op
 
     @classmethod

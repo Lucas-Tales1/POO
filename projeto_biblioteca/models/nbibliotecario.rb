@@ -1,7 +1,7 @@
 require 'json'
-require_relative 'CRUD'
+require_relative 'crud'
 
-class Bibliotecario < CRUD
+class Bibliotecario < Crud
   attr_accessor :nome, :id
 
   def initialize(nome, id)
@@ -18,5 +18,14 @@ class Bibliotecario < CRUD
     dados = listar
     dados << { nome: @nome, id: @id }
     File.write(@caminho_arquivo, JSON.pretty_generate(dados))
+  end
+
+  def listar
+    if File.exist?(@caminho_arquivo)
+      arquivo = File.read(@caminho_arquivo)
+      JSON.parse(arquivo)
+    else
+      []
+    end
   end
 end

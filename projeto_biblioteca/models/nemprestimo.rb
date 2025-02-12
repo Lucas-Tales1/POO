@@ -1,7 +1,7 @@
 require 'json'
-require_relative 'CRUD'
+require_relative 'crud'
 
-class Emprestimo < CRUD
+class Emprestimo < Crud
   attr_accessor :livro, :usuario, :data_emprestimo, :data_devolucao, :data_devolucao_real, :id
 
   def initialize(livro, usuario, data_emprestimo, data_devolucao, data_devolucao_real, id)

@@ -1,3 +1,5 @@
+import json
+
 class Livro:
     def __init__(self,id,titulo,autor,genero,num_paginas,ano_publicacao,disponibilidade,qtd_total,qtd_disponivel):
         self.id = id

@@ -1,3 +1,5 @@
+import json
+
 class Usuario:
     def __init__(self, nome, numero_matricula,endereco,tel,email,historico_emprestimos):
         self.nome = nome

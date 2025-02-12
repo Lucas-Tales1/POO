@@ -1,3 +1,5 @@
+import json
+
 class Bibliotecario:
     def __init__(self,nome,id):
         self.nome = nome

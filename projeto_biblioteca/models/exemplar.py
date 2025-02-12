@@ -1,3 +1,5 @@
+import json
+
 class Exemplar:
     def __init__(self,descricao, situacao, data_devolucao):
         self.descricao = descricao

@@ -12,14 +12,15 @@ class Bibliotecario:
     @staticmethod
     def carregar_bibliotecarios():
         try:
-            with open('bibliotecarios.json', 'r') as file:
+            with open(os.path.join('dados', 'bibliotecarios.json'), 'r') as file:
                 return json.load(file)
         except FileNotFoundError:
             return []
 
     @staticmethod
     def salvar_bibliotecarios(dados):
-        with open('bibliotecarios.json', 'w') as file:
+        os.makedirs('dados', exist_ok=True)
+        with open(os.path.join('dados', 'bibliotecarios.json'), 'w') as file:
             json.dump(dados, file, indent=4)
 
     @staticmethod

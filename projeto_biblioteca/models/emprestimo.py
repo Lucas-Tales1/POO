@@ -1,4 +1,5 @@
 import json
+import os
 from livro import Livro
 
 class Emprestimo:
@@ -16,14 +17,15 @@ class Emprestimo:
     @staticmethod
     def carregar_emprestimos():
         try:
-            with open('emprestimos.json', 'r') as file:
+            with open(os.path.join('dados', 'emprestimos.json'), 'r') as file:
                 return json.load(file)
         except FileNotFoundError:
             return []
 
     @staticmethod
     def salvar_emprestimos(dados):
-        with open('emprestimos.json', 'w') as file:
+        os.makedirs('dados', exist_ok=True)
+        with open(os.path.join('dados', 'emprestimos.json'), 'w') as file:
             json.dump(dados, file, indent=4)
 
     @staticmethod

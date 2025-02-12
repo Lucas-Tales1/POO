@@ -1,4 +1,5 @@
 import json
+import os
 
 class Exemplar:
     def __init__(self, descricao, situacao, data_devolucao):
@@ -12,14 +13,15 @@ class Exemplar:
     @staticmethod
     def carregar_exemplares():
         try:
-            with open('exemplares.json', 'r') as file:
+            with open(os.path.join('dados', 'exemplares.json'), 'r') as file:
                 return json.load(file)
         except FileNotFoundError:
             return []
 
     @staticmethod
     def salvar_exemplares(dados):
-        with open('exemplares.json', 'w') as file:
+        os.makedirs('dados', exist_ok=True)
+        with open(os.path.join('dados', 'exemplares.json'), 'w') as file:
             json.dump(dados, file, indent=4)
 
     @staticmethod

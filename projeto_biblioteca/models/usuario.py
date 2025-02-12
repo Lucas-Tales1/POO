@@ -1,4 +1,5 @@
 import json
+import os
 
 class Usuario:
     def __init__(self, nome, numero_matricula, endereco, tel, email, historico_emprestimos):
@@ -15,14 +16,15 @@ class Usuario:
     @staticmethod
     def carregar_usuarios():
         try:
-            with open('usuarios.json', 'r') as file:
+            with open(os.path.join('dados', 'usuarios.json'), 'r') as file:
                 return json.load(file)
         except FileNotFoundError:
             return []
 
     @staticmethod
     def salvar_usuarios(dados):
-        with open('usuarios.json', 'w') as file:
+        os.makedirs('dados', exist_ok=True)
+        with open(os.path.join('dados', 'usuarios.json'), 'w') as file:
             json.dump(dados, file, indent=4)
 
     @staticmethod

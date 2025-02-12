@@ -5,7 +5,7 @@ class Exemplar < Crud
   attr_accessor :descricao, :situacao, :data_devolucao
 
   def initialize(descricao, situacao, data_devolucao)
-    super('exemplares.json')
+    super('dados/exemplares.json')
     @descricao = descricao
     @situacao = situacao
     @data_devolucao = data_devolucao
@@ -18,15 +18,6 @@ class Exemplar < Crud
   def salvar
     dados = listar
     dados << { descricao: @descricao, situacao: @situacao, data_devolucao: @data_devolucao }
-    File.write(@caminho_arquivo, JSON.pretty_generate(dados))
-  end
-
-  def listar
-    if File.exist?(@caminho_arquivo)
-      arquivo = File.read(@caminho_arquivo)
-      JSON.parse(arquivo)
-    else
-      []
-    end
+    super(dados)
   end
 end

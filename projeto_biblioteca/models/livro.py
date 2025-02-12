@@ -1,4 +1,5 @@
 import json
+import os
 
 class Livro:
     def __init__(self, id, titulo, autor, genero, num_paginas, ano_publicacao, disponibilidade, qtd_total, qtd_disponivel):
@@ -18,14 +19,15 @@ class Livro:
     @staticmethod
     def carregar_livros():
         try:
-            with open('livros.json', 'r') as file:
+            with open(os.path.join('dados', 'livros.json'), 'r') as file:
                 return json.load(file)
         except FileNotFoundError:
             return []
 
     @staticmethod
     def salvar_livros(dados):
-        with open('livros.json', 'w') as file:
+        os.makedirs('dados', exist_ok=True)
+        with open(os.path.join('dados', 'livros.json'), 'w') as file:
             json.dump(dados, file, indent=4)
 
     @staticmethod

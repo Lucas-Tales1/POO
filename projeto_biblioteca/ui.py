@@ -30,6 +30,8 @@ class UI:
             UI.visitante_abrir_conta()
         if op == 2:
             UI.visitante_entrar_no_sistema()
+        if op == 99:
+            UI.sair_do_sistema()
         return op
 
     @staticmethod
@@ -40,14 +42,16 @@ class UI:
         print("  5 - Adicionar, 6 - Listar, 7 - Atualizar, 8 - Excluir")
         print("Cadastro de exemplares")
         print("  9 - Adicionar, 10 - Listar, 11 - Atualizar, 12 - Excluir")
-        print("Empréstimos")
+        print("Gerenciar Empréstimos")
         print(" 13 - Listar")
         print("0 - Sair, 99 - Fim")
         op = int(input("\nInforme uma opção: "))
         if op == 0:
+            UI.sair_da_conta()
+        if op == 99:
             UI.sair_do_sistema()
-        else:
-            raise ValueError("Funções de bibliotecário ainda não implementadas")
+        if(op != 0 and op != 99):
+            print("Funções de usuário ainda não implementadas")
 
     @staticmethod
     def menu_usuario():
@@ -55,8 +59,10 @@ class UI:
         print("0 - Sair, 99 - Fim")
         op = int(input("\nInforme uma opção: "))
         if op == 0:
+            UI.sair_da_conta()
+        if op == 99:
             UI.sair_do_sistema()
-        else:
+        if(op != 0 and op != 99):
             print("Funções de usuário ainda não implementadas")
 
     @staticmethod
@@ -97,12 +103,16 @@ class UI:
             print("Email ou senha incorretos.")
 
     @staticmethod
-    def sair_do_sistema():
-        print("Saindo do sistema...")
+    def sair_da_conta():
+        print("Saindo da conta...")
         UI.usuario_id = 0
         UI.usuario_nome = ""
         UI.usuario_autenticado = None
         View.usuario_logout(session={})
+    
+    def sair_do_sistema():
+        print("Saindo do sistema...")
         exit()
+        
 
 UI.main()

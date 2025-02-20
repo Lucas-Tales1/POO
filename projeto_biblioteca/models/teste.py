@@ -1,14 +1,14 @@
 from datetime import date
 from emprestimo import Emprestimo
-from bibliotecario import Bibliotecario
 from exemplar import Exemplar
 from livro import Livro
-from usuario import Usuario
+from usuario import Usuario, Bibliotecario
 
 # Adiciona um empréstimo
 Emprestimo.salvar_novo_emprestimo('Livro A', 'Usuário 1', '2025-02-01', '2025-02-10', '2025-02-09', 1)
+
 # Testar salvar novo bibliotecário
-Bibliotecario.salvar_novo_bibliotecario('Maria Silva', 1)
+Bibliotecario.salvar_novo_bibliotecario('João Santos', '12345', 'Rua A, 123', '9999-9999', 'joao@example.com', 'senha123', 1)
 
 # Testar salvar novo exemplar
 Exemplar.salvar_novo_exemplar('Descrição Exemplar 1', True, '2025-02-15')
@@ -17,8 +17,7 @@ Exemplar.salvar_novo_exemplar('Descrição Exemplar 1', True, '2025-02-15')
 Livro.salvar_novo_livro(1, 'Livro C', 'Autor C', 'Ficção', 300, 2020, 'Disponível', 10, 5)
 
 # Testar salvar novo usuário
-Usuario.salvar_novo_usuario('João Santos', '12345', 'Rua A, 123', '9999-9999', 'joao@example.com', ['Empréstimo 1', 'Empréstimo 2'])
-
+Usuario.salvar_novo_usuario(1, 'João Santos', '12345', 'Rua A, 123', '9999-9999', 'joao@example.com', 'senha123', ['Empréstimo 1', 'Empréstimo 2'])
 
 # Carrega todos os empréstimos e imprime
 emprestimos = Emprestimo.carregar_emprestimos()
@@ -44,4 +43,3 @@ for livro in livros:
 usuarios = Usuario.carregar_usuarios()
 for usuario in usuarios:
     print(usuario)
-
